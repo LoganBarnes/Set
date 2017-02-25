@@ -1,0 +1,102 @@
+#pragma once
+
+
+#include <string>
+#include "io/ImguiOpenGLIOHandler.hpp"
+
+
+namespace graphics
+{
+
+class OpenGLWrapper;
+class Camera;
+
+}
+
+
+namespace shared
+{
+
+class World;
+
+}
+
+
+namespace set
+{
+
+
+
+/////////////////////////////////////////////
+/// \brief The SetIOHandler class
+///
+/// \author Logan Barnes
+/////////////////////////////////////////////
+class SetIOHandler : public shared::ImguiOpenGLIOHandler
+{
+
+public:
+
+  ///////////////////////////////////////////////////////////////
+  /// \brief SetIOHandler
+  ///////////////////////////////////////////////////////////////
+  SetIOHandler( shared::World &world );
+
+
+  ///////////////////////////////////////////////////////////////
+  /// \brief ~SetIOHandler
+  ///////////////////////////////////////////////////////////////
+  ~SetIOHandler( ) = default;
+
+
+  ///////////////////////////////////////////////////////////////
+  /// \brief rotateCamera
+  /// \param deltaX
+  /// \param deltaY
+  ///////////////////////////////////////////////////////////////
+  void rotateCamera (
+                     double deltaX,
+                     double deltaY
+                     );
+
+
+  ///////////////////////////////////////////////////////////////
+  /// \brief zoomCamera
+  /// \param deltaZ
+  ///////////////////////////////////////////////////////////////
+  void zoomCamera ( double deltaZ );
+
+
+  ///////////////////////////////////////////////////////////////
+  /// \brief resize
+  /// \param w
+  /// \param h
+  ///////////////////////////////////////////////////////////////
+  void resize( int w, int h );
+
+
+
+protected:
+
+private:
+
+  virtual
+  void _onRender ( const double alpha ) final;
+
+  virtual
+  void _onGuiRender( ) final;
+
+
+//  void _setScene( );
+
+
+  // std::unique_ptr< OptixScene > upScene_;
+
+  // int currentScene_;
+
+
+};
+
+
+} // namespace set
+
