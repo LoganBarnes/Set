@@ -28,7 +28,6 @@ set( PROJECT_CONFIG_FILE ${SHARED_PATH}/src/common/ProjectConfig.hpp.in )
 
 set( USE_GLFW  ON CACHE BOOL "" FORCE )
 set( USE_GLM   ON CACHE BOOL "" FORCE )
-#set( USE_OPTIX ON CACHE BOOL "" FORCE )
 set( USE_GUI   ON CACHE BOOL "" FORCE )
 
 set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
@@ -118,6 +117,7 @@ set(
     ${SHARED_INCLUDE_DIRS}
 
      ${SRC_DIR}/io
+     ${SRC_DIR}/scene
     )
 
 # cpp files
@@ -126,14 +126,17 @@ set(
 
     # ignored by compilers but added to project files
     ${SHARED_UNCRUSTIFY_FILE}
-    ${SHADER_PATH}/screenSpace/shader.vert
-    ${SHADER_PATH}/blending/shader.frag
+    ${SHADER_PATH}/default/shader.vert
+    ${SHADER_PATH}/default/shader.frag
+#    ${SHADER_PATH}/simpleShading/shader.frag
 
     ${SHARED_SOURCE}
     ${PTX_SOURCE}
 
      ${SRC_DIR}/io/SetIOHandler.cpp
      ${SRC_DIR}/io/SetCallback.cpp
+
+     ${SRC_DIR}/scene/Environment.cpp
     )
 
 
@@ -168,5 +171,6 @@ set(
 # file with main function
 set( PROJECT_MAIN ${SRC_DIR}/exec/Set.cpp )
 
+#set_property ( GLOBAL PROPERTY CXX_STANDARD 14  )
 include( ${SHARED_PATH}/cmake/DefaultProjectLibrary.cmake )
 

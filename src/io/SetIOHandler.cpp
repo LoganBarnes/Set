@@ -5,18 +5,15 @@
 #include <algorithm>
 
 // shared
-#include "glad/glad.h"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "graphics/glfw/GlfwWrapper.hpp"
+#include "imgui.h"
 #include "graphics/opengl/OpenGLWrapper.hpp"
 #include "graphics/Camera.hpp"
 #include "io/ImguiCallback.hpp"
-#include "imgui.h"
 
 // project
 #include "SetCallback.hpp"
 #include "SetConfig.hpp"
+#include "Environment.hpp"
 
 
 namespace set
@@ -29,6 +26,8 @@ namespace
 constexpr int defaultWidth  = 1280;
 constexpr int defaultHeight = 720;
 
+glm::vec3 backgroundColor = glm::vec3( 0.6f );
+
 }
 
 
@@ -38,9 +37,9 @@ constexpr int defaultHeight = 720;
 /// \author Logan Barnes
 /////////////////////////////////////////////
 SetIOHandler::SetIOHandler( shared::World &world )
-  : ImguiOpenGLIOHandler( world, true, defaultWidth, defaultHeight, true )
+  : ImguiOpenGLIOHandler( world, true, defaultWidth, defaultHeight )
+  , upEnvironment_( new Environment( *upGLWrapper_ ) )
 {
-
   std::unique_ptr< graphics::Callback > upCallback( new SetCallback( *this ) );
 
   imguiCallback_->setCallback( std::move( upCallback ) );
@@ -49,9 +48,20 @@ SetIOHandler::SetIOHandler( shared::World &world )
   // camera
   //
   upCamera_->setAspectRatio( defaultWidth * 1.0f / defaultHeight );
-  upCamera_->updateOrbit( 20.0f, 45.0f, -30.0f );
+  upCamera_->updateOrbit( 30.0f, 20.0f, -30.0f );
 
+  upGLWrapper_->setClearColor(
+                              backgroundColor.r,
+                              backgroundColor.g,
+                              backgroundColor.b,
+                              1.0
+                              );
 }
+
+
+
+SetIOHandler::~SetIOHandler( )
+{}
 
 
 
@@ -68,9 +78,9 @@ SetIOHandler::rotateCamera(
                            double deltaY
                            )
 {
-
   upCamera_->updateOrbit( 0.f, static_cast< float >( deltaX ), static_cast< float >( deltaY ) );
 
+  showWorld( 0.0 );
 }
 
 
@@ -84,9 +94,9 @@ SetIOHandler::rotateCamera(
 void
 SetIOHandler::zoomCamera( double deltaZ )
 {
-
   upCamera_->updateOrbit( static_cast< float >( deltaZ * 0.25 ), 0.f, 0.f );
 
+  showWorld( 0.0 );
 }
 
 
@@ -108,7 +118,7 @@ SetIOHandler::resize(
   upGLWrapper_->setViewportSize( w, h );
   upCamera_->setAspectRatio( w * 1.0f / h );
 
-  this->showWorld( 1.0 );
+  showWorld( 0.0 );
 
 }
 
@@ -126,6 +136,8 @@ SetIOHandler::_onRender( const double )
 
   upGLWrapper_->clearWindow( );
 
+  upEnvironment_->render( *upCamera_ );
+
 } // SetIOHandler::onRender
 
 
@@ -139,21 +151,15 @@ void
 SetIOHandler::_onGuiRender( )
 {
 
-  bool alwaysTrue = true;
+  bool alwaysOpen = true;
 
   ImGui::SetNextWindowSize( ImVec2( 345, defaultHeight * 1.0f ), ImGuiSetCond_FirstUseEver );
+//  ImGui::SetNextWindowSize( ImVec2( 0, 0 ) ); // auto scale size?
   ImGui::SetNextWindowPos ( ImVec2( 0, 0 ), ImGuiSetCond_FirstUseEver );
 
-  ImGui::Begin( "Light Bender Settings", &alwaysTrue );
+  ImGui::Begin( "Settings", &alwaysOpen );
 
-  //
-  // FPS
-  //
-  ImGui::Text(
-              "Application average %.3f ms/frame (%.1f FPS)",
-              1000.0f / ImGui::GetIO( ).Framerate,
-              ImGui::GetIO( ).Framerate
-              );
+  upEnvironment_->renderGui( );
 
   //
   // Control listing
@@ -169,7 +175,6 @@ SetIOHandler::_onGuiRender( )
                 );
 
   }
-
 
   ImGui::End( );
 

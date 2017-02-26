@@ -9,6 +9,8 @@ namespace graphics
 {
 
 class OpenGLWrapper;
+
+template< typename T >
 class Camera;
 
 }
@@ -25,6 +27,8 @@ class World;
 namespace set
 {
 
+class Environment;
+//class Scene;
 
 
 /////////////////////////////////////////////
@@ -46,7 +50,7 @@ public:
   ///////////////////////////////////////////////////////////////
   /// \brief ~SetIOHandler
   ///////////////////////////////////////////////////////////////
-  ~SetIOHandler( ) = default;
+  ~SetIOHandler( );
 
 
   ///////////////////////////////////////////////////////////////
@@ -90,7 +94,8 @@ private:
 //  void _setScene( );
 
 
-  // std::unique_ptr< OptixScene > upScene_;
+  std::unique_ptr< Environment > upEnvironment_;
+//  std::unique_ptr< Scene > upScene_;
 
   // int currentScene_;
 
