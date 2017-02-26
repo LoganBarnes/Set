@@ -43,6 +43,7 @@ SetIOHandler::SetIOHandler( shared::World &world )
   std::unique_ptr< graphics::Callback > upCallback( new SetCallback( *this ) );
 
   imguiCallback_->setCallback( std::move( upCallback ) );
+  imguiCallback_->setEventHandler( this );
 
   //
   // camera
@@ -79,8 +80,6 @@ SetIOHandler::rotateCamera(
                            )
 {
   upCamera_->updateOrbit( 0.f, static_cast< float >( deltaX ), static_cast< float >( deltaY ) );
-
-  showWorld( 0.0 );
 }
 
 
@@ -95,8 +94,6 @@ void
 SetIOHandler::zoomCamera( double deltaZ )
 {
   upCamera_->updateOrbit( static_cast< float >( deltaZ * 0.25 ), 0.f, 0.f );
-
-  showWorld( 0.0 );
 }
 
 
@@ -114,12 +111,8 @@ SetIOHandler::resize(
                      int h
                      )
 {
-
   upGLWrapper_->setViewportSize( w, h );
   upCamera_->setAspectRatio( w * 1.0f / h );
-
-  showWorld( 0.0 );
-
 }
 
 

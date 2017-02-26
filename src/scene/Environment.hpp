@@ -4,6 +4,9 @@
 // system
 #include <vector>
 
+// shared
+#include "glm/glm.hpp"
+
 
 namespace graphics
 {
@@ -53,6 +56,16 @@ private:
   void _buildVBO ( std::vector< float > *pVbo );
 
   graphics::OpenGLWrapper &graphics_;
+
+  bool showAxes_ = true;
+  bool showGrid_ = true;
+
+  int cellRadius_       = 10;
+  float singleCellSize_ = 2.0f;
+
+  glm::vec3 gridColor_ = glm::vec3( 0.4f );
+
+  int numGridVerts_ = 0;
 
 };
 

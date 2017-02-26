@@ -17,6 +17,7 @@ SetCallback::SetCallback( SetIOHandler &handler )
 {}
 
 
+
 SetCallback::~SetCallback( )
 {}
 
@@ -30,10 +31,10 @@ SetCallback::~SetCallback( )
 ///
 void
 SetCallback::handleWindowSize(
-                                      GLFWwindow*,
-                                      int width,
-                                      int height
-                                      )
+                              GLFWwindow*,
+                              int width,
+                              int height
+                              )
 {
 
   handler_.resize( width, height );
@@ -44,11 +45,11 @@ SetCallback::handleWindowSize(
 
 void
 SetCallback::handleMouseButton(
-                                       GLFWwindow *pWindow,
-                                       int         button,
-                                       int         action,
-                                       int
-                                       )
+                               GLFWwindow *pWindow,
+                               int         button,
+                               int         action,
+                               int
+                               )
 {
 
   if ( button == GLFW_MOUSE_BUTTON_1 )
@@ -94,12 +95,12 @@ SetCallback::handleMouseButton(
 
 void
 SetCallback::handleKey(
-                               GLFWwindow *pWindow,
-                               int         key,
-                               int,
-                               int         action,
-                               int
-                               )
+                       GLFWwindow *pWindow,
+                       int         key,
+                       int,
+                       int         action,
+                       int
+                       )
 {
 
   switch ( key )
@@ -159,7 +160,7 @@ SetCallback::handleKey(
 
     if ( action == GLFW_RELEASE && ctrlDown_ )
     {
-        // save
+      // save
     }
 
 
@@ -167,7 +168,7 @@ SetCallback::handleKey(
 
     if ( action == GLFW_RELEASE )
     {
-      handler_.showWorld( 1.0 );
+      handler_.showWorld( );
     }
 
   default:
@@ -183,10 +184,10 @@ SetCallback::handleKey(
 //void SetCallback::handleCursorPosition(GLFWwindow *window, double xpos, double ypos)
 void
 SetCallback::handleCursorPosition(
-                                          GLFWwindow*,
-                                          double xpos,
-                                          double ypos
-                                          )
+                                  GLFWwindow*,
+                                  double xpos,
+                                  double ypos
+                                  )
 {
 
   if ( leftMouseDown_ )
@@ -213,10 +214,10 @@ SetCallback::handleCursorPosition(
 //void SetCallback::handleScroll(GLFWwindow* widnow, double xoffset, double yoffset)
 void
 SetCallback::handleScroll(
-                                  GLFWwindow*,
-                                  double,
-                                  double yoffset
-                                  )
+                          GLFWwindow*,
+                          double,
+                          double yoffset
+                          )
 {
 
   handler_.zoomCamera( yoffset );

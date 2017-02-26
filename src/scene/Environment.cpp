@@ -24,18 +24,6 @@ namespace set
 namespace
 {
 
-bool showAxes = true;
-bool showGrid = true;
-
-int cellRadius       = 10;
-float singleCellSize = 2.0f;
-
-glm::vec3 gridColor = glm::vec3( 0.4f );
-
-
-int numVerts = 0;
-
-
 void
 setVertex(
           std::vector< float > &verts,
@@ -67,6 +55,12 @@ setVertex(
 /////////////////////////////////////////////
 Environment::Environment( graphics::OpenGLWrapper &graphics )
   : graphics_( graphics )
+  , showAxes_( true )
+  , showGrid_( true )
+  , cellRadius_( 10 )
+  , singleCellSize_( 2.0f )
+  , gridColor_( 0.4f )
+  , numGridVerts_( 0 )
 {
 
   graphics_.addProgram(
@@ -125,7 +119,7 @@ void
 Environment::render( const graphics::Camera< float > &camera )
 {
 
-  if ( showGrid || showAxes )
+  if ( showGrid_ || showAxes_ )
   {
     graphics_.useProgram( "envProgram" );
 
@@ -137,7 +131,19 @@ Environment::render( const graphics::Camera< float > &camera )
                                glm::value_ptr( projViewModel )
                                );
 
-    graphics_.renderBuffer( "envBuffer", 0, numVerts - ( showAxes ? 0 : 6 ), GL_LINES );
+    if ( showGrid_ )
+    {
+
+      graphics_.renderBuffer( "envBuffer", 0, numGridVerts_ - ( showAxes_ ? 4 : 0 ), GL_LINES );
+
+    }
+
+    if ( showAxes_ )
+    {
+
+      graphics_.renderBuffer( "envBuffer", numGridVerts_, 6, GL_LINES );
+
+    }
   }
 
 } // Environment::onRender
@@ -158,9 +164,9 @@ Environment::renderGui( )
   //
   if ( ImGui::CollapsingHeader( "Grid", "grid", false, true ) )
   {
-    ImGui::Checkbox( "Show Grid", &showGrid );
+    ImGui::Checkbox( "Show Grid", &showGrid_ );
 
-    ImGui::Checkbox( "Show Axes", &showAxes );
+    ImGui::Checkbox( "Show Axes", &showAxes_ );
   }
 
 } // Environment::onGuiRender
@@ -173,50 +179,54 @@ Environment::_buildVBO( std::vector< float > *pVbo )
 
   std::vector< float > &vbo = *pVbo;
 
-  size_t size = 0;
+  // grid
+  size_t size = static_cast< size_t >( cellRadius_ ) * 8 + 4;
+  size *= 6;
 
-  if ( showGrid )
-  {
-    size  = static_cast< size_t >( cellRadius ) * 8 + ( showAxes ? 0 : 4 );
-    size *= 6;
-  }
-
-  if ( showAxes )
-  {
-    size += 36;
-  }
+  // axes
+  size += 36;
 
   vbo.resize( size );
 
   size_t index = 0;
 
-  float maxDist = cellRadius * singleCellSize;
+  float maxDist = cellRadius_ * singleCellSize_;
 
-  if ( showGrid )
+  // grid
   {
     float distFromAxis;
 
-    for ( int r = -cellRadius; r <= cellRadius; ++r )
+    for ( int r = -cellRadius_; r <= cellRadius_; ++r )
     {
-      if ( showAxes && r == 0 )
+      if ( r == 0 )
       {
         continue;
       }
 
-      distFromAxis = r * singleCellSize;
+      distFromAxis = r * singleCellSize_;
 
-      // line parallel to X axis
-      setVertex( vbo, index, -maxDist,     0.0, distFromAxis, gridColor );
-      setVertex( vbo, index, maxDist,      0.0, distFromAxis, gridColor );
+      // line parallel to X-axis
+      setVertex( vbo, index, -maxDist,     0.0, distFromAxis, gridColor_ );
+      setVertex( vbo, index, maxDist,      0.0, distFromAxis, gridColor_ );
 
-      // line parallel to Z axis
-      setVertex( vbo, index, distFromAxis, 0.0, -maxDist,     gridColor );
-      setVertex( vbo, index, distFromAxis, 0.0, maxDist,      gridColor );
+      // line parallel to Z-axis
+      setVertex( vbo, index, distFromAxis, 0.0, -maxDist,     gridColor_ );
+      setVertex( vbo, index, distFromAxis, 0.0, maxDist,      gridColor_ );
     }
+
+    // X-axis
+    setVertex( vbo, index, -maxDist, 0.0, 0.0,      gridColor_ );
+    setVertex( vbo, index, maxDist,  0.0, 0.0,      gridColor_ );
+
+    // Z-axis
+    setVertex( vbo, index, 0.0,      0.0, -maxDist, gridColor_ );
+    setVertex( vbo, index, 0.0,      0.0, maxDist,  gridColor_ );
 
   }
 
-  if ( showAxes )
+  numGridVerts_ = index / 6;
+
+  // axes
   {
     // X-axis
     glm::vec3 color ( 1.0f, 0.0f, 0.0f );
@@ -234,28 +244,8 @@ Environment::_buildVBO( std::vector< float > *pVbo )
     setVertex( vbo, index, 0.0, 0.0, maxDist,  color );
   }
 
-  numVerts = size / 6;
-
-//  int counter = 0;
-//  bool isColor = false;
-//  std::cout << "V: ";
-//  for ( float &f : vbo )
-//  {
-//    std::cout << f << " ";
-//    if ( ++counter % 3 == 0 )
-//    {
-//      isColor = !isColor;
-//      std::cout << std::endl;
-//      if ( isColor )
-//        std::cout << "C: ";
-//      else
-//        std::cout << "V: ";
-//      std::cout << counter / 6;
-//    }
-//  }
 
   assert( index == size );
-  assert( 0 );
 
 } // Environment::_buildVBO
 
