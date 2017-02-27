@@ -76,8 +76,8 @@ Environment::Environment( graphics::OpenGLWrapper &graphics )
 
   graphics.addBuffer(
                      "envBuffer",
-                     static_cast< GLsizeiptr >( vbo.size( ) * sizeof( float ) ),
                      vbo.data( ),
+                     vbo.size( ),
                      GL_STATIC_DRAW,
                      settings
                      );
