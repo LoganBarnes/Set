@@ -16,6 +16,8 @@ class OpenGLWrapper;
 template< typename T >
 class Camera;
 
+struct VAOSettings;
+
 }
 
 
@@ -53,7 +55,10 @@ public:
 
 private:
 
-  void _buildVBO ( std::vector< float > *pVbo );
+  void _buildVBO (
+                  std::vector< float >  *pVbo,
+                  graphics::VAOSettings *pSettings
+                  );
 
   graphics::OpenGLWrapper &graphics_;
 

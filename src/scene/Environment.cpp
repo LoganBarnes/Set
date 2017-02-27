@@ -70,40 +70,17 @@ Environment::Environment( graphics::OpenGLWrapper &graphics )
                        );
 
   std::vector< float > vbo;
+  graphics::VAOSettings settings { "envProgram" };
 
-  _buildVBO( &vbo );
+  _buildVBO( &vbo, &settings );
 
-  graphics.addBufferNoVAO(
-                          "envBuffer",
-                          static_cast< GLsizeiptr >( vbo.size( ) * sizeof( float ) ),
-                          vbo.data( ),
-                          GL_STATIC_DRAW
-                          );
-
-  float *pointer = 0;
-  GLint size     = 3;
-  GLsizei stride = static_cast< GLsizei >( sizeof( GLfloat ) ) * 6;
-
-  VAOSettings settings;
-  settings.names.push_back( "inPosition" );
-  settings.sizes.push_back( size );
-  settings.types.push_back( GL_FLOAT );
-  settings.strides.push_back( stride );
-  settings.pointers.push_back( pointer );
-
-  pointer += 3;
-
-  settings.names.push_back( "inColor" );
-  settings.sizes.push_back( size );
-  settings.types.push_back( GL_FLOAT );
-  settings.strides.push_back( stride );
-  settings.pointers.push_back( pointer );
-
-  graphics.addVAOToBuffer(
-                          "envBuffer",
-                          "envProgram",
-                          settings
-                          );
+  graphics.addBuffer(
+                     "envBuffer",
+                     static_cast< GLsizeiptr >( vbo.size( ) * sizeof( float ) ),
+                     vbo.data( ),
+                     GL_STATIC_DRAW,
+                     settings
+                     );
 
 }
 
@@ -174,7 +151,10 @@ Environment::renderGui( )
 
 
 void
-Environment::_buildVBO( std::vector< float > *pVbo )
+Environment::_buildVBO(
+                       std::vector< float > *pVbo,
+                       graphics::VAOSettings          *pSettings
+                       )
 {
 
   std::vector< float > &vbo = *pVbo;
@@ -246,6 +226,18 @@ Environment::_buildVBO( std::vector< float > *pVbo )
 
 
   assert( index == size );
+
+
+  graphics::VAOSettings &settings = *pSettings;
+
+  float *pointer = 0;
+  GLint elmtSize = 3;
+
+  settings.totalStride = static_cast< GLsizei >( sizeof( GLfloat ) ) * 6;
+
+  settings.settings.push_back( { "inPosition", elmtSize, GL_FLOAT, pointer } );
+  pointer += elmtSize;
+  settings.settings.push_back( { "inColor", elmtSize, GL_FLOAT, pointer } );
 
 } // Environment::_buildVBO
 
