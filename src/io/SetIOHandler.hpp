@@ -28,7 +28,7 @@ namespace set
 {
 
 class Environment;
-//class Scene;
+class Scene;
 
 
 /////////////////////////////////////////////
@@ -71,15 +71,6 @@ public:
   void zoomCamera ( double deltaZ );
 
 
-  ///////////////////////////////////////////////////////////////
-  /// \brief resize
-  /// \param w
-  /// \param h
-  ///////////////////////////////////////////////////////////////
-  void resize( int w, int h );
-
-
-
 protected:
 
 private:
@@ -88,14 +79,14 @@ private:
   void _onRender ( const double alpha ) final;
 
   virtual
-  void _onGuiRender( ) final;
+  void _onGuiRender ( ) final;
 
 
 //  void _setScene( );
 
 
   std::unique_ptr< Environment > upEnvironment_;
-//  std::unique_ptr< Scene > upScene_;
+  std::unique_ptr< Scene > upScene_;
 
   // int currentScene_;
 
@@ -104,4 +95,3 @@ private:
 
 
 } // namespace set
-

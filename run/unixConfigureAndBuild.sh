@@ -1,6 +1,7 @@
 #!/bin/bash
 
 STRICT_FLAGS=OFF
+TESTING=OFF
 
 function printUsage() {
   echo "Usage: ./unixConfigureAndBuild.sh <options>";
@@ -25,6 +26,9 @@ case $key in
     -sf|--strict-flags)
     STRICT_FLAGS=ON
     ;;
+    -t|--test)
+    TESTING=ON
+    ;;
     -h|--help)
     printUsage;
     exit;
@@ -42,7 +46,6 @@ done
 RUN_DIR=$(pwd)
 
 # toggleable variables
-TESTING=OFF
 BUILD_MODE=Release
 
 # create the _build directory

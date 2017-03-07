@@ -36,88 +36,15 @@ set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
 # set variables from shared simulation project
 add_subdirectory( ${SHARED_PATH} )
 
-# system header dirs
-set(
-    PROJECT_SYSTEM_INCLUDE_DIRS
-    ${SHARED_SYSTEM_INCLUDE_DIRS}
-    )
-
-# libraries to link against
-set(
-    PROJECT_LINK_LIBS
-    ${SHARED_LINK_LIBS}
-    )
-
-# must be built before project lib
-set(
-    PROJECT_DEP_TARGETS
-    ${SHARED_DEP_TARGETS}
-    )
-
-
-
-# set(
-#     PROJECT_CUDA_SOURCE
-
-#     ${SHARED_PATH}/src/cuda/CudaWrappers.cuh
-#     ${SHARED_PATH}/src/cuda/CudaWrappers.cu
-#     ${SHARED_PATH}/src/cuda/CudaRandom.cuh
-#     ${SHARED_PATH}/src/cuda/CudaRandom.cu
-
-#     )
-
-# set( PTX_SOURCE
-
-#     ${SRC_DIR}/renderers/gpu/cuda/primitives/Parallelogram.cu
-#     ${SRC_DIR}/renderers/gpu/cuda/primitives/Box.cu
-#     ${SRC_DIR}/renderers/gpu/cuda/primitives/Sphere.cu
-#     ${SRC_DIR}/renderers/gpu/cuda/primitives/TriangleMesh.cu
-
-#     ${SRC_DIR}/renderers/gpu/cuda/Cameras.cu
-#     ${SRC_DIR}/renderers/gpu/cuda/Brdf.cu
-#     )
-
-# set(
-#     PROJECT_CUDA_INCLUDE_DIRS
-
-#     ${SHARED_INCLUDE_DIRS}
-#     ${SHARED_CUDA_INCLUDE_DIRS}
-
-#     ${SHARED_PATH}/src/cuda
-#     ${SRC_DIR}/renderers
-#     )
-
-# set(
-#     PROJECT_CUDA_SYSTEM_INCLUDE_DIRS
-
-#     ${SHARED_SYSTEM_INCLUDE_DIRS}
-#     ${SHARED_CUDA_SYSTEM_INCLUDE_DIRS}
-
-#     ${SHARED_PATH}/src/cuda/helpers
-#     )
-
-# set(
-#     PROJECT_CUDA_LINK_LIBS
-#     ${SHARED_CUDA_LINK_LIBS}
-#     )
-
-# set(
-#     PROJECT_CUDA_DEP_TARGETS
-#     ${SHARED_CUDA_DEP_TARGETS}
-#     )
-
-
-# set( USE_CUDA ON )
 
 
 # header dirs
 set(
     PROJECT_INCLUDE_DIRS
 
-    ${SHARED_INCLUDE_DIRS}
-
-     ${SRC_DIR}/io
-     ${SRC_DIR}/scene
+    ${SRC_DIR}/io
+    ${SRC_DIR}/scene
+    ${SRC_DIR}/relations
     )
 
 # cpp files
@@ -128,21 +55,21 @@ set(
     ${SHARED_UNCRUSTIFY_FILE}
     ${SHADER_PATH}/default/shader.vert
     ${SHADER_PATH}/default/shader.frag
-#    ${SHADER_PATH}/simpleShading/shader.frag
 
-    ${SHARED_SOURCE}
-    ${PTX_SOURCE}
+    ${SRC_DIR}/io/SetIOHandler.cpp
+    ${SRC_DIR}/io/SetCallback.cpp
 
-     ${SRC_DIR}/io/SetIOHandler.cpp
-     ${SRC_DIR}/io/SetCallback.cpp
+#    ${SRC_DIR}/relations/Geometry.cpp
+    ${SRC_DIR}/relations/Relation.hpp
 
-     ${SRC_DIR}/scene/Environment.cpp
+    ${SRC_DIR}/scene/Environment.cpp
+    ${SRC_DIR}/scene/Scene.cpp
     )
 
 
 set(
     TESTING_SOURCE
-    ${SRC_DIR}/testing/ExampleUnitTests.cpp
+    ${SRC_DIR}/testing/RelationUnitTests.cpp
     )
 
 set(
@@ -164,6 +91,7 @@ set(
 
 set(
     TESTING_INCLUDE_DIRS
+    ${SRC_DIR}/relations
     ${SRC_DIR}/testing
     )
 

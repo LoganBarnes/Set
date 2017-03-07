@@ -65,8 +65,8 @@ Environment::Environment( graphics::OpenGLWrapper &graphics )
 
   graphics_.addProgram(
                        "envProgram",
-                       set::SHADER_PATH + "default/shader.vert",
-                       set::SHADER_PATH + "default/shader.frag"
+                       set::SHADER_PATH + "colored/shader.vert",
+                       set::SHADER_PATH + "colored/shader.frag"
                        );
 
   std::vector< float > vbo;

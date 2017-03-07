@@ -31,12 +31,11 @@ main(
 
   try
   {
-
-     //
-     // create world to handle physical updates
-     // and ioHandler to interface between the
-     // world and the user
-     //
+    //
+    // create world to handle physical updates
+    // and ioHandler to interface between the
+    // world and the user
+    //
     shared::World world;
     set::SetIOHandler io( world );
 
