@@ -32,7 +32,7 @@ cd run
 
 ### Windows
 
-```bash
+```batch
 cd run
 winConfigureAndBuild.cmd
 bin\runSet.exe
