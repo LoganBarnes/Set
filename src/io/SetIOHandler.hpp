@@ -82,13 +82,8 @@ private:
   void _onGuiRender ( ) final;
 
 
-//  void _setScene( );
-
-
   std::unique_ptr< Environment > upEnvironment_;
   std::unique_ptr< Scene > upScene_;
-
-  // int currentScene_;
 
 
 };

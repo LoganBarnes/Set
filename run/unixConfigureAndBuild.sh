@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# toggleable variables
+BUILD_MODE=Release
 STRICT_FLAGS=OFF
 TESTING=OFF
+OFFLINE=OFF
 
 function printUsage() {
   echo "Usage: ./unixConfigureAndBuild.sh <options>";
@@ -29,6 +32,12 @@ case $key in
     -t|--test)
     TESTING=ON
     ;;
+    -o|--offline)
+    OFFLINE=ON
+    ;;
+    -d|--debug)
+    BUILD_MODE=Debug
+    ;;
     -h|--help)
     printUsage;
     exit;
@@ -45,20 +54,16 @@ done
 # current run directory
 RUN_DIR=$(pwd)
 
-# toggleable variables
-BUILD_MODE=Release
-
 # create the _build directory
 cmake -E make_directory _build
 
 # run cmake from the build directory to configure the project
-cd _build
-cmake -DCMAKE_BUILD_TYPE=$BUILD_MODE \
-      -DBUILD_TESTS=$TESTING \
-      -DSTRICT_FLAGS=$STRICT_FLAGS \
-      -DCMAKE_INSTALL_PREFIX=$RUN_DIR ../..
+cmake -E chdir _build cmake -DCMAKE_BUILD_TYPE=$BUILD_MODE \
+                            -DSTRICT_FLAGS=$STRICT_FLAGS \
+                            -DBUILD_TESTS=$TESTING \
+                            -DOFFLINE=$OFFLINE \
+                            -DCMAKE_INSTALL_PREFIX=$RUN_DIR ../..
 
 # run the cmake build command to build the project with the native build system
-cmake --build . --target install --config $BUILD_MODE -- -j12
+cmake -E chdir _build cmake --build . --target install --config $BUILD_MODE -- -j12
 
-cd ..

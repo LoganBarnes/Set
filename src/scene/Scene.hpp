@@ -62,6 +62,8 @@ private:
 
   std::vector< std::unique_ptr< Geometry > > relations_;
 
+//  std::unordered_map< int, std::vector< T > > relations_;
+
 };
 
 

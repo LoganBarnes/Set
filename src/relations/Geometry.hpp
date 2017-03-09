@@ -5,11 +5,18 @@
 #include <vector>
 #include "glm/glm.hpp"
 
+#ifdef __CUDACC__
+#include <cuda_runtime.h>
+#define CUDA_CALLABLE_MEMBER __host__ __device__
+#else
+#define CUDA_CALLABLE_MEMBER
+#endif
+
 
 namespace set
 {
 
-template< typename ... Ts >
+template< int Level, typename ... Ts >
 class Relation;
 
 class Geometry
@@ -17,18 +24,29 @@ class Geometry
 
 public:
 
+  CUDA_CALLABLE_MEMBER
   explicit
   Geometry( const int relationLevel )
     : relationLevel_( relationLevel )
   { }
 
+
+  CUDA_CALLABLE_MEMBER
   virtual
   ~Geometry( ) { }
+
+
+  CUDA_CALLABLE_MEMBER
+  Geometry( const Geometry &other )
+    : relationLevel_( other.relationLevel_ )
+  {}
+
 
   virtual
   std::vector< glm::vec3 > getBasePoints ( ) const = 0;
 
-  int
+
+  const int&
   getRelationLevel( ) const { return relationLevel_; }
 
 
@@ -43,6 +61,5 @@ private:
   const int relationLevel_;
 
 };
-
 
 } // namespace set

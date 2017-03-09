@@ -1,10 +1,13 @@
 #include "Relation.hpp"
+#include "RelationDispatcher.hpp"
 #include "gmock/gmock.h"
+
 
 namespace
 {
 
 constexpr float eps = 1.0e-7f;
+
 
 ///
 /// \brief The RelationUnitTests class
@@ -291,6 +294,52 @@ TEST_F( RelationUnitTests, LevelsAreCorrect )
   auto tv1 = set::make_relation( v1, v2 );
 
   ASSERT_EQ( 4, tv1.getRelationLevel( ) );
+}
+
+
+
+/////////////////////////////////////////////////////////////////
+/// \brief LevelsAreCorrect
+/////////////////////////////////////////////////////////////////
+TEST_F( RelationUnitTests, SubclassCastingWorks )
+{
+//  std::vector< std::unique_ptr< set::Geometry > > geomVec;
+
+//  // points
+//  auto p1 = set::make_relation( 0.0f, 0.0f, 0.0f );
+//  auto p2 = set::make_relation( 1.0f, 0.0f, 0.0f );
+//  auto p3 = set::make_relation( 0.0f, 1.0f, 0.0f );
+
+//  auto p4 = set::make_relation( 0.0f, 0.0f, 1.0f );
+//  auto p5 = set::make_relation( 1.0f, 0.0f, 1.0f );
+//  auto p6 = set::make_relation( 0.0f, 1.0f, 1.0f );
+
+//  auto p7 = set::make_relation( 0.0f, 0.0f, 2.0f );
+//  auto p8 = set::make_relation( 1.0f, 0.0f, 2.0f );
+//  auto p9 = set::make_relation( 0.0f, 1.0f, 2.0f );
+
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p1 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p2 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p3 ) );
+
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p4 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p5 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p6 ) );
+
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p7 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p8 ) );
+//  geomVec.push_back( std::unique_ptr< set::Geometry >( &p9 ) );
+
+//  for ( auto & geom : geomVec )
+//  {
+//    auto &rel = geom->getSubClass< 0, float >( );
+
+//    ASSERT_EQ(
+//              typeid( set::Relation0 ),
+//              typeid( rel )
+//              );
+//  }
+
 }
 
 

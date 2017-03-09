@@ -15,7 +15,13 @@
 #include "SetConfig.hpp"
 #include "Relation.hpp"
 
-
+#ifdef USE_CUDA
+#include "CudaWrappers.cuh"
+#include "CudaScene.cuh"
+#define cuda_func( func ) func
+#else // USE_CUDA
+#define cuda_func( x ) static_cast< void >( 0 )
+#endif // USE_CUDA
 
 namespace set
 {
@@ -27,12 +33,25 @@ namespace set
 /////////////////////////////////////////////
 Scene::Scene( graphics::OpenGLWrapper &graphics )
   : graphics_( graphics )
-{}
+{
+  cuda_func( cuda_init( ) );
+  cuda_func( cuda_initScene( ) );
+
+  cuda_func( cuda_addRelation( 1, 2, 3 ) );
+  cuda_func( cuda_addRelation( 2, 3, 4 ) );
+  cuda_func( cuda_addRelation( 3, 4, 5 ) );
+  cuda_func( cuda_addRelation( 4, 5, 6 ) );
+  cuda_func( cuda_addRelation( 5, 6, 7 ) );
+  cuda_func( cuda_addRelation( 6, 7, 8 ) );
+}
 
 
 
 Scene::~Scene( )
-{}
+{
+  cuda_func( cuda_clearScene( ) );
+  cuda_func( cuda_destroy( ) );
+}
 
 
 

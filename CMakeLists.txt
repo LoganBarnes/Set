@@ -1,7 +1,8 @@
 cmake_minimum_required ( VERSION 3.2.0 )
 project ( Set )
 
-option( BUILD_TESTS OFF "Build unit tests created with gmock/gtest framework" )
+option( BUILD_TESTS OFF "Build unit tests created with gmock/gtest framework"  )
+option( OFFLINE     OFF "Avoid downloads that require and internet connection" )
 
 # namespace used for project
 set ( PROJECT_NAMESPACE set )
@@ -32,10 +33,28 @@ set( USE_GUI   ON CACHE BOOL "" FORCE )
 
 set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
 
+set( NO_THIRDPARTY_DOWNLOAD ${OFFLINE} CACHE BOOL "" FORCE )
+
 
 # set variables from shared simulation project
 add_subdirectory( ${SHARED_PATH} )
 
+
+set(
+    PROJECT_CUDA_INCLUDE_DIRS
+
+    ${SRC_DIR}/scene
+    ${SRC_DIR}/relations
+    )
+
+set(
+    PROJECT_CUDA_SOURCE
+
+    ${SHARED_PATH}/src/cuda/CudaWrappers.cuh
+    ${SHARED_PATH}/src/cuda/CudaWrappers.cu
+    ${SRC_DIR}/scene/cuda/CudaScene.cuh
+    ${SRC_DIR}/scene/cuda/CudaScene.cu
+    )
 
 
 # header dirs
@@ -44,6 +63,7 @@ set(
 
     ${SRC_DIR}/io
     ${SRC_DIR}/scene
+    ${SRC_DIR}/scene/cuda
     ${SRC_DIR}/relations
     )
 
@@ -59,8 +79,9 @@ set(
     ${SRC_DIR}/io/SetIOHandler.cpp
     ${SRC_DIR}/io/SetCallback.cpp
 
-#    ${SRC_DIR}/relations/Geometry.cpp
+    ${SRC_DIR}/relations/Geometry.hpp
     ${SRC_DIR}/relations/Relation.hpp
+    ${SRC_DIR}/relations/RelationDispatcher.hpp
 
     ${SRC_DIR}/scene/Environment.cpp
     ${SRC_DIR}/scene/Scene.cpp
@@ -99,6 +120,7 @@ set(
 # file with main function
 set( PROJECT_MAIN ${SRC_DIR}/exec/Set.cpp )
 
-#set_property ( GLOBAL PROPERTY CXX_STANDARD 14  )
+set ( FORCE_CUDA_STANDARD 11 )
+set ( FORCE_CPP_STANDARD  14 )
 include( ${SHARED_PATH}/cmake/DefaultProjectLibrary.cmake )
 
