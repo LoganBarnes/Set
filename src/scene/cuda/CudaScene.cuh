@@ -15,7 +15,6 @@ void cuda_addRelation( float x, float y, float z );
 
 void cuda_clearScene( );
 
-
 } // namespace set
 
 
