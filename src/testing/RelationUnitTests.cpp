@@ -65,7 +65,7 @@ protected:
   {
     ASSERT_EQ( expected.size( ), actual.size( ) ) << "glm::vec3 vectors are not the same size";
 
-    for ( int i = 0; i < expected.size( ); ++i )
+    for ( std::vector< glm::vec3 >::size_type i = 0; i < expected.size( ); ++i )
     {
       checkPoint( expected[ i ], actual[ i ] );
     }

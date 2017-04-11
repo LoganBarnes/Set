@@ -5,12 +5,13 @@
 #include <iostream>
 
 // shared
+#define GLM_ENABLE_EXPERIMENTAL
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include "imgui.h"
-#include "graphics/opengl/OpenGLWrapper.hpp"
-#include "graphics/Camera.hpp"
+#include "shared/graphics/OpenGLWrapper.hpp"
+#include "shared/graphics/Camera.hpp"
 
 // project
 #include "SetConfig.hpp"

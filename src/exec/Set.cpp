@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "driver/EventDriver.hpp"
-#include "world/World.hpp"
+#include "shared/core/EventDriver.hpp"
+#include "shared/core/World.hpp"
 #include "SetIOHandler.hpp"
 #include "SetConfig.hpp"
 
@@ -21,7 +21,6 @@ main(
      const char **argv  ///< array of argument strings
      )
 {
-
   shared::Driver::printProjectInfo(
                                    set::PROJECT_NAME,
                                    set::VERSION_MAJOR,
@@ -53,14 +52,10 @@ main(
   }
   catch ( const std::exception &e )
   {
-
     std::cerr << "ERROR: program failed: " << e.what( ) << std::endl;
-
-    return EXIT_FAILURE;
-
   }
 
-  // should never reach this point
+  // should only reach here if an exception is thrown
   return EXIT_FAILURE;
 
 } // main

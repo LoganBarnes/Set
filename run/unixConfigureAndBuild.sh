@@ -4,13 +4,16 @@
 BUILD_MODE=Release
 STRICT_FLAGS=OFF
 TESTING=OFF
-OFFLINE=OFF
+
+CLEAN=false
 
 function printUsage() {
   echo "Usage: ./unixConfigureAndBuild.sh <options>";
   echo "    options:";
   echo "        -sf or --strict-flags -> enable strict compile flags";
-  echo "        -h  of --help         -> print this message";
+  echo "        -t  or --test         -> compile unit tests";
+  echo "        -d  or --debug        -> compile in debug mode";
+  echo "        -h  or --help         -> print this message";
 }
 
 # http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
@@ -32,11 +35,11 @@ case $key in
     -t|--test)
     TESTING=ON
     ;;
-    -o|--offline)
-    OFFLINE=ON
-    ;;
     -d|--debug)
     BUILD_MODE=Debug
+    ;;
+    -c|--clean)
+    CLEAN=true
     ;;
     -h|--help)
     printUsage;
@@ -51,6 +54,22 @@ esac
 shift # past argument or value
 done
 
+# clean project by removing installed dirs
+if [[ "$CLEAN" == true ]]
+  then
+
+  cmake -E remove_directory _build
+  cmake -E remove_directory bin
+  cmake -E remove_directory lib
+  cmake -E remove_directory libbin
+  cmake -E remove_directory include
+  cmake -E remove_directory testbin
+  cmake -E remove imgui.ini
+
+  echo "Project clean"
+  exit
+fi
+
 # current run directory
 RUN_DIR=$(pwd)
 
@@ -61,7 +80,6 @@ cmake -E make_directory _build
 cmake -E chdir _build cmake -DCMAKE_BUILD_TYPE=$BUILD_MODE \
                             -DSTRICT_FLAGS=$STRICT_FLAGS \
                             -DBUILD_TESTS=$TESTING \
-                            -DOFFLINE=$OFFLINE \
                             -DCMAKE_INSTALL_PREFIX=$RUN_DIR ../..
 
 # run the cmake build command to build the project with the native build system

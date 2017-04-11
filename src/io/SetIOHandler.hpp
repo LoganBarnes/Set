@@ -2,7 +2,7 @@
 
 
 #include <string>
-#include "io/ImguiOpenGLIOHandler.hpp"
+#include "shared/core/ImguiOpenGLIOHandler.hpp"
 
 
 namespace graphics

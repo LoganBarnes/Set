@@ -8,8 +8,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
-#include "graphics/opengl/OpenGLWrapper.hpp"
-#include "graphics/Camera.hpp"
+#include "shared/graphics/OpenGLWrapper.hpp"
+#include "shared/graphics/Camera.hpp"
 
 // project
 #include "SetConfig.hpp"
@@ -26,6 +26,7 @@
 namespace set
 {
 
+
 /////////////////////////////////////////////
 /// \brief Set::Set
 ///
@@ -34,7 +35,6 @@ namespace set
 Scene::Scene( graphics::OpenGLWrapper &graphics )
   : graphics_( graphics )
 {
-  cuda_func( cuda_init( ) );
   cuda_func( cuda_initScene( ) );
 
   cuda_func( cuda_addRelation( 1, 2, 3 ) );
@@ -50,7 +50,6 @@ Scene::Scene( graphics::OpenGLWrapper &graphics )
 Scene::~Scene( )
 {
   cuda_func( cuda_clearScene( ) );
-  cuda_func( cuda_destroy( ) );
 }
 
 
@@ -62,7 +61,7 @@ Scene::~Scene( )
 /// \author Logan Barnes
 /////////////////////////////////////////////
 void
-Scene::render( const graphics::Camera< float > &camera )
+Scene::render( const graphics::Camera< float > &/*camera*/ )
 {} // Scene::onRender
 
 

@@ -2,7 +2,6 @@ cmake_minimum_required ( VERSION 3.2.0 )
 project ( Set )
 
 option( BUILD_TESTS OFF "Build unit tests created with gmock/gtest framework"  )
-option( OFFLINE     OFF "Avoid downloads that require and internet connection" )
 
 # namespace used for project
 set ( PROJECT_NAMESPACE set )
@@ -27,13 +26,10 @@ set( OUTPUT_PATH ${PROJECT_SOURCE_DIR}/run/output )
 set( PROJECT_CONFIG_FILE ${SHARED_PATH}/src/common/ProjectConfig.hpp.in )
 
 
-set( USE_GLFW  ON CACHE BOOL "" FORCE )
 set( USE_GLM   ON CACHE BOOL "" FORCE )
+set( USE_GLFW  ON CACHE BOOL "" FORCE )
 set( USE_GUI   ON CACHE BOOL "" FORCE )
-
 set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
-
-set( NO_THIRDPARTY_DOWNLOAD ${OFFLINE} CACHE BOOL "" FORCE )
 
 
 # set variables from shared simulation project

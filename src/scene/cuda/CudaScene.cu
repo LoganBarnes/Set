@@ -2,6 +2,7 @@
 
 #include <cuda_runtime.h>
 #include <thrust/device_vector.h>
+#include "CudaWrappers.cuh"
 
 // project
 #include "Relation.hpp"
@@ -16,6 +17,21 @@ extern "C"
 
   namespace
   {
+
+  struct CudaSetup
+  {
+    CudaSetup()
+    {
+      cuda_init( );
+    }
+
+    ~CudaSetup()
+    {
+      cuda_destroy( );
+    }
+  };
+
+  const CudaSetup cudaSetup;
 
   thrust::device_vector< Relation0 > *pGeomVec;
 

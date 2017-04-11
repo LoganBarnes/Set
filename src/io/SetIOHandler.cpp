@@ -6,9 +6,9 @@
 
 // shared
 #include "imgui.h"
-#include "graphics/opengl/OpenGLWrapper.hpp"
-#include "graphics/Camera.hpp"
-#include "io/ImguiCallback.hpp"
+#include "shared/graphics/OpenGLWrapper.hpp"
+#include "shared/graphics/Camera.hpp"
+#include "shared/graphics/ImguiCallback.hpp"
 
 // project
 #include "SetCallback.hpp"
