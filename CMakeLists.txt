@@ -76,6 +76,8 @@ set(
     ${SRC_DIR}/io/SetIOHandler.cpp
     ${SRC_DIR}/io/SetCallback.hpp
     ${SRC_DIR}/io/SetCallback.cpp
+    ${SRC_DIR}/io/AxisRenderer.hpp
+    ${SRC_DIR}/io/AxisRenderer.cpp
     # ${SRC_DIR}/io/SceneRendererInterface.hpp
     # ${SRC_DIR}/io/SceneRenderer.hpp
     # ${SRC_DIR}/io/SceneRendererImplCpu.cpp
@@ -87,8 +89,6 @@ set(
 
     ${SRC_DIR}/world/SetWorld.hpp
     ${SRC_DIR}/world/SetWorld.cpp
-    # ${SRC_DIR}/world/Environment.hpp
-    # ${SRC_DIR}/world/Environment.cpp
     # ${SRC_DIR}/world/SceneInterface.hpp
     # ${SRC_DIR}/world/Scene.hpp
     # ${SRC_DIR}/world/SceneImplCpu.cpp

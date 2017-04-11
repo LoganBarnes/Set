@@ -6,19 +6,13 @@
 #include "shared/graphics/GraphicsForwardDeclarations.hpp"
 
 
-namespace shared
-{
-
-class World;
-
-}
-
 
 namespace set
 {
 
-class Environment;
-class Scene;
+class SetWorld;
+class AxisRenderer;
+//class SceneRenderer;
 
 
 /////////////////////////////////////////////
@@ -34,7 +28,7 @@ public:
   ///////////////////////////////////////////////////////////////
   /// \brief SetIOHandler
   ///////////////////////////////////////////////////////////////
-  SetIOHandler( shared::World &world );
+  SetIOHandler( SetWorld &world );
 
 
   ///////////////////////////////////////////////////////////////
@@ -71,9 +65,9 @@ private:
   virtual
   void _onGuiRender ( ) final;
 
+  set::SetWorld &setWorld_;
+  std::unique_ptr< AxisRenderer > upAxisRenderer_;
 
-//  std::unique_ptr< Environment > upEnvironment_;
-//  std::unique_ptr< Scene > upScene_;
 
 
 };

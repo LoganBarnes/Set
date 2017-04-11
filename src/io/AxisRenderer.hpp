@@ -1,4 +1,4 @@
-// Environment.hpp
+// AxisRenderer.hpp
 #pragma once
 
 // system
@@ -14,18 +14,18 @@ namespace set
 {
 
 
-class Environment
+class AxisRenderer
 {
 
 public:
 
   /////////////////////////////////////////////
-  /// \brief Environment
+  /// \brief AxisRenderer
   /////////////////////////////////////////////
-  Environment( graphics::OpenGLWrapper &graphics );
+  AxisRenderer( graphics::OpenGLWrapper &graphics );
 
 
-  ~Environment( ) = default;
+  ~AxisRenderer( ) = default;
 
 
   /////////////////////////////////////////////

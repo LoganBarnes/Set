@@ -1,4 +1,4 @@
-#include "Environment.hpp"
+#include "AxisRenderer.hpp"
 
 // system
 #include <cassert>
@@ -54,7 +54,7 @@ setVertex(
 ///
 /// \author Logan Barnes
 /////////////////////////////////////////////
-Environment::Environment( graphics::OpenGLWrapper &graphics )
+AxisRenderer::AxisRenderer( graphics::OpenGLWrapper &graphics )
   : graphics_( graphics )
   , showAxes_( true )
   , showGrid_( true )
@@ -94,7 +94,7 @@ Environment::Environment( graphics::OpenGLWrapper &graphics )
 /// \author Logan Barnes
 /////////////////////////////////////////////
 void
-Environment::render( const graphics::Camera< float > &camera )
+AxisRenderer::render( const graphics::Camera< float > &camera )
 {
 
   if ( showGrid_ || showAxes_ )
@@ -124,17 +124,17 @@ Environment::render( const graphics::Camera< float > &camera )
     }
   }
 
-} // Environment::onRender
+} // AxisRenderer::onRender
 
 
 
 /////////////////////////////////////////////
-/// \brief Environment::renderGui
+/// \brief AxisRenderer::renderGui
 ///
 /// \author Logan Barnes
 /////////////////////////////////////////////
 void
-Environment::renderGui( )
+AxisRenderer::renderGui( )
 {
 
   //
@@ -147,12 +147,12 @@ Environment::renderGui( )
     ImGui::Checkbox( "Show Axes", &showAxes_ );
   }
 
-} // Environment::onGuiRender
+} // AxisRenderer::onGuiRender
 
 
 
 void
-Environment::_buildVBO(
+AxisRenderer::_buildVBO(
                        std::vector< float > *pVbo,
                        graphics::VAOSettings          *pSettings
                        )
@@ -240,7 +240,7 @@ Environment::_buildVBO(
   pointer += elmtSize;
   settings.settings.push_back( { "inColor", elmtSize, GL_FLOAT, pointer } );
 
-} // Environment::_buildVBO
+} // AxisRenderer::_buildVBO
 
 
 
