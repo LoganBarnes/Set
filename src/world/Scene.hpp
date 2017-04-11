@@ -1,43 +1,33 @@
-// Environment.hpp
+// Scene.hpp
 #pragma once
 
 // system
 #include <vector>
+#include <memory>
 
 // shared
 #include "glm/glm.hpp"
-
-
-namespace graphics
-{
-
-class OpenGLWrapper;
-
-template< typename T >
-class Camera;
-
-struct VAOSettings;
-
-}
-
+#include "shared/graphics/GraphicsForwardDeclarations.hpp"
 
 
 namespace set
 {
 
+class Geometry;
 
-class Environment
+
+class Scene
 {
 
 public:
 
   /////////////////////////////////////////////
-  /// \brief Environment
+  /// \brief Scene
   /////////////////////////////////////////////
-  Environment( graphics::OpenGLWrapper &graphics );
+  Scene( graphics::OpenGLWrapper &graphics );
 
 
-  ~Environment( ) = default;
+  ~Scene( );
 
 
   /////////////////////////////////////////////
@@ -55,22 +45,11 @@ public:
 
 private:
 
-  void _buildVBO (
-                  std::vector< float >  *pVbo,
-                  graphics::VAOSettings *pSettings
-                  );
-
   graphics::OpenGLWrapper &graphics_;
 
-  bool showAxes_ = true;
-  bool showGrid_ = true;
+  std::vector< std::unique_ptr< Geometry > > relations_;
 
-  int cellRadius_       = 10;
-  float singleCellSize_ = 2.0f;
-
-  glm::vec3 gridColor_ = glm::vec3( 0.4f );
-
-  int numGridVerts_ = 0;
+//  std::unordered_map< int, std::vector< T > > relations_;
 
 };
 

@@ -1,0 +1,29 @@
+// SetWorld.cpp
+#include "SetWorld.hpp"
+
+
+namespace set
+{
+
+
+///////////////////////////////////////////////////////////////
+/// \brief SetWorld::SetWorld
+///////////////////////////////////////////////////////////////
+SetWorld::SetWorld( )
+  : shared::World()
+{}
+
+
+///////////////////////////////////////////////////////////////
+/// \brief SetWorld::update
+///////////////////////////////////////////////////////////////
+void
+SetWorld::update (
+                  const double /*worldTime*/, ///< update to this time
+                  const double /*timestep*/   ///< interval since last update
+                  )
+{}
+
+
+} // end namespace set
+

@@ -36,21 +36,21 @@ set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
 add_subdirectory( ${SHARED_PATH} )
 
 
-set(
-    PROJECT_CUDA_INCLUDE_DIRS
+# set(
+#     PROJECT_CUDA_INCLUDE_DIRS
 
-    ${SRC_DIR}/scene
-    ${SRC_DIR}/relations
-    )
+#     ${SRC_DIR}/scene
+#     ${SRC_DIR}/relations
+#     )
 
-set(
-    PROJECT_CUDA_SOURCE
+# set(
+#     PROJECT_CUDA_SOURCE
 
-    ${SHARED_PATH}/src/cuda/CudaWrappers.cuh
-    ${SHARED_PATH}/src/cuda/CudaWrappers.cu
-    ${SRC_DIR}/scene/cuda/CudaScene.cuh
-    ${SRC_DIR}/scene/cuda/CudaScene.cu
-    )
+#     ${SHARED_PATH}/src/cuda/CudaWrappers.cuh
+#     ${SHARED_PATH}/src/cuda/CudaWrappers.cu
+#     ${SRC_DIR}/scene/cuda/CudaScene.cuh
+#     ${SRC_DIR}/scene/cuda/CudaScene.cu
+#     )
 
 
 # header dirs
@@ -58,9 +58,9 @@ set(
     PROJECT_INCLUDE_DIRS
 
     ${SRC_DIR}/io
-    ${SRC_DIR}/scene
-    ${SRC_DIR}/scene/cuda
     ${SRC_DIR}/relations
+    ${SRC_DIR}/world
+    ${SRC_DIR}/world/cuda
     )
 
 # cpp files
@@ -72,15 +72,27 @@ set(
     ${SHADER_PATH}/default/shader.vert
     ${SHADER_PATH}/default/shader.frag
 
+    ${SRC_DIR}/io/SetIOHandler.hpp
     ${SRC_DIR}/io/SetIOHandler.cpp
+    ${SRC_DIR}/io/SetCallback.hpp
     ${SRC_DIR}/io/SetCallback.cpp
+    # ${SRC_DIR}/io/SceneRendererInterface.hpp
+    # ${SRC_DIR}/io/SceneRenderer.hpp
+    # ${SRC_DIR}/io/SceneRendererImplCpu.cpp
+    # ${SRC_DIR}/io/SceneRendererImplGpu.cpp
 
-    ${SRC_DIR}/relations/Geometry.hpp
-    ${SRC_DIR}/relations/Relation.hpp
-    ${SRC_DIR}/relations/RelationDispatcher.hpp
+    # ${SRC_DIR}/relations/Geometry.hpp
+    # ${SRC_DIR}/relations/Relation.hpp
+    # ${SRC_DIR}/relations/RelationDispatcher.hpp
 
-    ${SRC_DIR}/scene/Environment.cpp
-    ${SRC_DIR}/scene/Scene.cpp
+    ${SRC_DIR}/world/SetWorld.hpp
+    ${SRC_DIR}/world/SetWorld.cpp
+    # ${SRC_DIR}/world/Environment.hpp
+    # ${SRC_DIR}/world/Environment.cpp
+    # ${SRC_DIR}/world/SceneInterface.hpp
+    # ${SRC_DIR}/world/Scene.hpp
+    # ${SRC_DIR}/world/SceneImplCpu.cpp
+    # ${SRC_DIR}/world/SceneImplGpu.cpp
     )
 
 

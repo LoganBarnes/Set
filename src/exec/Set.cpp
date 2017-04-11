@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "shared/core/EventDriver.hpp"
-#include "shared/core/World.hpp"
+#include "SetWorld.hpp"
 #include "SetIOHandler.hpp"
 #include "SetConfig.hpp"
 
@@ -35,7 +35,7 @@ main(
     // and ioHandler to interface between the
     // world and the user
     //
-    shared::World world;
+    set::SetWorld world;
     set::SetIOHandler io( world );
 
     //

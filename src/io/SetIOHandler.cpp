@@ -13,8 +13,8 @@
 // project
 #include "SetCallback.hpp"
 #include "SetConfig.hpp"
-#include "Environment.hpp"
-#include "Scene.hpp"
+//#include "Environment.hpp"
+//#include "Scene.hpp"
 
 
 namespace set
@@ -39,8 +39,8 @@ glm::vec3 backgroundColor = glm::vec3( 0.6f );
 /////////////////////////////////////////////
 SetIOHandler::SetIOHandler( shared::World &world )
   : ImguiOpenGLIOHandler( world, true, defaultWidth, defaultHeight )
-  , upEnvironment_( new Environment( *upGLWrapper_ ) )
-  , upScene_      ( new Scene( *upGLWrapper_ ) )
+//  , upEnvironment_( new Environment( *upGLWrapper_ ) )
+//  , upScene_      ( new Scene( *upGLWrapper_ ) )
 {
   std::unique_ptr< graphics::Callback > upCallback( new SetCallback( *this ) );
 
@@ -112,9 +112,9 @@ SetIOHandler::_onRender( const double )
 
   upGLWrapper_->clearWindow( );
 
-  upEnvironment_->render( *upCamera_ );
+//  upEnvironment_->render( *upCamera_ );
 
-  upScene_->render( *upCamera_ );
+//  upScene_->render( *upCamera_ );
 
 } // SetIOHandler::onRender
 
@@ -137,8 +137,8 @@ SetIOHandler::_onGuiRender( )
 
   ImGui::SetWindowSize( ImVec2( 0, 0 ), ImGuiSetCond_FirstUseEver ); // auto scale size
 
-  upScene_->renderGui( );
-  upEnvironment_->renderGui( );
+//  upScene_->renderGui( );
+//  upEnvironment_->renderGui( );
 
   //
   // Control listing

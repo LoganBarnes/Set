@@ -3,17 +3,7 @@
 
 #include <string>
 #include "shared/core/ImguiOpenGLIOHandler.hpp"
-
-
-namespace graphics
-{
-
-class OpenGLWrapper;
-
-template< typename T >
-class Camera;
-
-}
+#include "shared/graphics/GraphicsForwardDeclarations.hpp"
 
 
 namespace shared
@@ -82,8 +72,8 @@ private:
   void _onGuiRender ( ) final;
 
 
-  std::unique_ptr< Environment > upEnvironment_;
-  std::unique_ptr< Scene > upScene_;
+//  std::unique_ptr< Environment > upEnvironment_;
+//  std::unique_ptr< Scene > upScene_;
 
 
 };
