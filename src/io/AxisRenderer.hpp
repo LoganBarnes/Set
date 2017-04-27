@@ -1,12 +1,14 @@
 // AxisRenderer.hpp
 #pragma once
 
+// shared
+#include "shared/graphics/GraphicsForwardDeclarations.hpp"
+#include "glm/glm.hpp"
+#include <glad/glad.h>
+
 // system
 #include <vector>
-
-// shared
-#include "glm/glm.hpp"
-#include "shared/graphics/GraphicsForwardDeclarations.hpp"
+#include <memory>
 
 
 
@@ -22,17 +24,21 @@ public:
   /////////////////////////////////////////////
   /// \brief AxisRenderer
   /////////////////////////////////////////////
-  AxisRenderer( graphics::OpenGLWrapper &graphics );
+  explicit
+  AxisRenderer( );
 
 
-  ~AxisRenderer( ) = default;
+  /////////////////////////////////////////////
+  /// \brief ~AxisRenderer
+  /////////////////////////////////////////////
+  ~AxisRenderer( );
 
 
   /////////////////////////////////////////////
   /// \brief render
-  /// \param alpha
+  /// \param camera
   /////////////////////////////////////////////
-  void render ( const graphics::Camera< float > &camera );
+  void render ( const graphics::GlmCamera< float > &camera );
 
 
   /////////////////////////////////////////////
@@ -43,12 +49,16 @@ public:
 
 private:
 
+  /////////////////////////////////////////////
+  /// \brief _buildVBO
+  /// \param pVbo
+  /// \param pSettings
+  /////////////////////////////////////////////
   void _buildVBO (
-                  std::vector< float >  *pVbo,
-                  graphics::VAOSettings *pSettings
+                  std::vector< float >                *pVbo,
+                  std::vector< graphics::VAOElement > *pVaoVec,
+                  GLsizei                             *pVaoTotalStride
                   );
-
-  graphics::OpenGLWrapper &graphics_;
 
   bool showAxes_ = true;
   bool showGrid_ = true;
@@ -59,6 +69,8 @@ private:
   glm::vec3 gridColor_ = glm::vec3( 0.4f );
 
   int numGridVerts_ = 0;
+
+  std::unique_ptr< graphics::StandardPipeline > upGLIds_;
 
 };
 

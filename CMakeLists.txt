@@ -26,10 +26,11 @@ set( OUTPUT_PATH ${PROJECT_SOURCE_DIR}/run/output )
 set( PROJECT_CONFIG_FILE ${SHARED_PATH}/src/common/ProjectConfig.hpp.in )
 
 
-set( USE_GLM   ON CACHE BOOL "" FORCE )
-set( USE_GLFW  ON CACHE BOOL "" FORCE )
-set( USE_GUI   ON CACHE BOOL "" FORCE )
-set( USE_GMOCK ${BUILD_TESTS} CACHE BOOL "" FORCE )
+set( USE_GLM    ON CACHE BOOL "" FORCE )
+set( USE_GLFW   ON CACHE BOOL "" FORCE )
+set( USE_OPENGL ON CACHE BOOL "" FORCE )
+set( USE_GUI    ON CACHE BOOL "" FORCE )
+set( USE_GMOCK  ${BUILD_TESTS} CACHE BOOL "" FORCE )
 
 
 # set variables from shared simulation project
@@ -95,34 +96,25 @@ set(
     # ${SRC_DIR}/world/SceneImplGpu.cpp
     )
 
+if ( ${BUILD_TESTS} )
 
-set(
-    TESTING_SOURCE
-    ${SRC_DIR}/testing/RelationUnitTests.cpp
-    )
+  set(
+      TESTING_SOURCE
+      ${SRC_DIR}/testing/RelationUnitTests.cpp
+      )
 
-set(
-    TESTING_LINK_LIBS
-    ${GMOCK_BOTH_LIBS}
-    ${SHARED_LINK_LIBS}
-    )
+  set(
+      TESTING_SYSTEM_INCLUDE_DIRS
+      ${SRC_DIR}/renderers/gpu/cuda
+      )
 
-set(
-    TESTING_DEP_TARGETS
-    ${GMOCK_BOTH_LIBS}
-    )
+  set(
+      TESTING_INCLUDE_DIRS
+      ${SRC_DIR}/relations
+      ${SRC_DIR}/testing
+      )
 
-set(
-    TESTING_SYSTEM_INCLUDE_DIRS
-    ${GMOCK_INCLUDE_DIRS}
-    ${SRC_DIR}/renderers/gpu/cuda
-    )
-
-set(
-    TESTING_INCLUDE_DIRS
-    ${SRC_DIR}/relations
-    ${SRC_DIR}/testing
-    )
+endif( ${BUILD_TESTS} )
 
 
 # file with main function
