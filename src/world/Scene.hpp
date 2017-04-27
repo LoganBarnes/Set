@@ -1,12 +1,10 @@
-// Scene.hpp
+// GpuScene.hpp
 #pragma once
 
 // system
-#include <vector>
 #include <memory>
 
 // shared
-#include "glm/glm.hpp"
 #include "shared/graphics/GraphicsForwardDeclarations.hpp"
 
 
@@ -16,25 +14,26 @@ namespace set
 class Geometry;
 
 
-class Scene
+class GpuScene
 {
 
 public:
 
   /////////////////////////////////////////////
-  /// \brief Scene
+  /// \brief GpuScene
   /////////////////////////////////////////////
-  Scene( graphics::OpenGLWrapper &graphics );
+  explicit
+  GpuScene( );
 
 
-  ~Scene( );
+  ~GpuScene( );
 
 
   /////////////////////////////////////////////
   /// \brief render
   /// \param alpha
   /////////////////////////////////////////////
-  void render ( const graphics::Camera< float > &camera );
+  std::vector<  > getGeometry() const;
 
 
   /////////////////////////////////////////////

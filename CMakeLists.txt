@@ -90,7 +90,7 @@ set(
     ${SRC_DIR}/world/SetWorld.hpp
     ${SRC_DIR}/world/SetWorld.cpp
     # ${SRC_DIR}/world/SceneInterface.hpp
-    # ${SRC_DIR}/world/Scene.hpp
+    ${SRC_DIR}/world/Scene.hpp
     # ${SRC_DIR}/world/SceneImplCpu.cpp
     # ${SRC_DIR}/world/SceneImplGpu.cpp
     )
