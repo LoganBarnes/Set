@@ -32,7 +32,7 @@ namespace set
 ///
 /// \author Logan Barnes
 /////////////////////////////////////////////
-Scene::Scene( graphics::OpenGLWrapper &graphics )
+Scene::Scene( shg::OpenGLWrapper &graphics )
   : graphics_( graphics )
 {
   cuda_func( cuda_initScene( ) );
@@ -61,7 +61,7 @@ Scene::~Scene( )
 /// \author Logan Barnes
 /////////////////////////////////////////////
 void
-Scene::render( const graphics::Camera< float > &/*camera*/ )
+Scene::render( const shg::Camera< float > &/*camera*/ )
 {} // Scene::onRender
 
 

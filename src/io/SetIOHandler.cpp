@@ -1,20 +1,20 @@
 #include "SetIOHandler.hpp"
 
-// system
-#include <vector>
-#include <algorithm>
-
-// shared
-#include "imgui.h"
-#include "shared/graphics/OpenGLWrapper.hpp"
-#include "shared/graphics/GlmCamera.hpp"
-#include "shared/graphics/ImguiCallback.hpp"
-
 // project
 #include "SetCallback.hpp"
 #include "SetConfig.hpp"
 #include "SetWorld.hpp"
 #include "AxisRenderer.hpp"
+
+// shared
+#include "shared/graphics/GlmCamera.hpp"
+#include "shared/graphics/ImguiCallback.hpp"
+#include "shared/graphics/OpenGLHelper.hpp"
+#include <imgui.h>
+
+// system
+#include <vector>
+#include <algorithm>
 
 
 namespace set
@@ -42,7 +42,7 @@ SetIOHandler::SetIOHandler( SetWorld &world )
   , setWorld_( world )
   , upAxisRenderer_( new AxisRenderer )
 {
-  std::unique_ptr< graphics::Callback > upCallback( new SetCallback( *this ) );
+  std::unique_ptr< shg::Callback > upCallback( new SetCallback( *this ) );
 
   imguiCallback_->setCallback( std::move( upCallback ) );
 
@@ -52,12 +52,12 @@ SetIOHandler::SetIOHandler( SetWorld &world )
   upCamera_->setAspectRatio( defaultWidth * 1.0f / defaultHeight );
 //  upCamera_->updateOrbit( 30.0f, 20.0f, -30.0f );
 
-  upGLWrapper_->setClearColor(
-                              backgroundColor.r,
-                              backgroundColor.g,
-                              backgroundColor.b,
-                              1.0
-                              );
+  glClearColor(
+               backgroundColor.r,
+               backgroundColor.g,
+               backgroundColor.b,
+               1.0
+               );
 }
 
 
@@ -108,8 +108,7 @@ SetIOHandler::zoomCamera( double deltaZ )
 void
 SetIOHandler::_onRender( const double )
 {
-
-  upGLWrapper_->clearWindow( );
+  shg::OpenGLHelper::clearFramebuffer( );
 
   upAxisRenderer_->render( *upCamera_ );
 

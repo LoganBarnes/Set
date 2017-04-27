@@ -38,7 +38,7 @@ public:
   /// \brief render
   /// \param camera
   /////////////////////////////////////////////
-  void render ( const graphics::GlmCamera< float > &camera );
+  void render ( const shg::GlmCamera< float > &camera );
 
 
   /////////////////////////////////////////////
@@ -55,9 +55,9 @@ private:
   /// \param pSettings
   /////////////////////////////////////////////
   void _buildVBO (
-                  std::vector< float >                *pVbo,
-                  std::vector< graphics::VAOElement > *pVaoVec,
-                  GLsizei                             *pVaoTotalStride
+                  std::vector< float >           *pVbo,
+                  std::vector< shg::VAOElement > *pVaoVec,
+                  GLsizei                        *pVaoTotalStride
                   );
 
   bool showAxes_ = true;
@@ -70,7 +70,7 @@ private:
 
   int numGridVerts_ = 0;
 
-  std::unique_ptr< graphics::StandardPipeline > upGLIds_;
+  std::unique_ptr< shg::StandardPipeline > upGLIds_;
 
 };
 

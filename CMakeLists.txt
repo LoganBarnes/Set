@@ -103,10 +103,10 @@ if ( ${BUILD_TESTS} )
       ${SRC_DIR}/testing/RelationUnitTests.cpp
       )
 
-  set(
-      TESTING_SYSTEM_INCLUDE_DIRS
-      ${SRC_DIR}/renderers/gpu/cuda
-      )
+#  set(
+#      TESTING_SYSTEM_INCLUDE_DIRS
+#      ${SRC_DIR}/renderers/gpu/cuda
+#      )
 
   set(
       TESTING_INCLUDE_DIRS

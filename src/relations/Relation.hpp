@@ -1,12 +1,11 @@
 // Relation.hpp
 #pragma once
 
+#include "Geometry.hpp"
+#include <glm/glm.hpp>
 
 #include <vector>
 #include <stdexcept>
-
-#include "glm/glm.hpp"
-#include "Geometry.hpp"
 
 
 namespace set

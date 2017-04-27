@@ -106,14 +106,11 @@ TEST_F( RelationUnitTests, TemplatesCompile )
 
   // planes
   auto t1 = set::make_relation( l1, l2 );
-
   auto t2 = set::make_relation( l3, l4 );
-
   auto t3 = set::make_relation( l5, l6 );
 
   // volume
   auto v1 = set::make_relation( t1, t2 );
-
   auto v2 = set::make_relation( t2, t3 );
 
   // temporal volume
@@ -186,9 +183,7 @@ TEST_F( RelationUnitTests, BasePointsAreCorrect )
 
   // planes
   auto t1 = set::make_relation( l1, l2 );
-
   auto t2 = set::make_relation( l3, l4 );
-
   auto t3 = set::make_relation( l5, l6 );
 
   checkPoints( std::vector< glm::vec3 >{ gp1, gp2, gp1, gp3 }, t1.getBasePoints( ) );
@@ -198,7 +193,6 @@ TEST_F( RelationUnitTests, BasePointsAreCorrect )
 
   // volume
   auto v1 = set::make_relation( t1, t2 );
-
   auto v2 = set::make_relation( t2, t3 );
 
   checkPoints( std::vector< glm::vec3 >{ gp1, gp2, gp1, gp3,
@@ -271,9 +265,7 @@ TEST_F( RelationUnitTests, LevelsAreCorrect )
 
   // planes
   auto t1 = set::make_relation( l1, l2 );
-
   auto t2 = set::make_relation( l3, l4 );
-
   auto t3 = set::make_relation( l5, l6 );
 
   ASSERT_EQ( 2, t1.getRelationLevel( ) );
@@ -283,7 +275,6 @@ TEST_F( RelationUnitTests, LevelsAreCorrect )
 
   // volume
   auto v1 = set::make_relation( t1, t2 );
-
   auto v2 = set::make_relation( t2, t3 );
 
   ASSERT_EQ( 3, v1.getRelationLevel( ) );

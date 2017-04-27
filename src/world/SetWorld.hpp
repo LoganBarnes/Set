@@ -13,7 +13,7 @@ namespace set
 ///
 /// \author Logan Barnes
 /////////////////////////////////////////////
-class SetWorld : public shared::World
+class SetWorld : public shs::World
 {
 
 public:
@@ -43,9 +43,7 @@ public:
 
 private:
 
-
 };
 
 
 } // end namespace set
-

@@ -7,11 +7,11 @@
 #include "shared/graphics/OpenGLHelper.hpp"
 #include "shared/graphics/OpenGLWrapper.hpp"
 #include "shared/graphics/GlmCamera.hpp"
-#include "imgui.h"
+#include <imgui.h>
 #define GLM_ENABLE_EXPERIMENTAL
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/gtx/string_cast.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 // system
 #include <cassert>
@@ -62,31 +62,31 @@ AxisRenderer::AxisRenderer( )
   , singleCellSize_( 2.0f )
   , gridColor_( 0.4f )
   , numGridVerts_( 0 )
-  , upGLIds_( new graphics::StandardPipeline )
+  , upGLIds_( new shg::StandardPipeline )
 {
   upGLIds_->program =
-    graphics::OpenGLHelper::createProgram(
-                                          set::SHADER_PATH + "colored/shader.vert",
-                                          set::SHADER_PATH + "colored/shader.frag"
-                                          );
+    shg::OpenGLHelper::createProgram(
+                                     set::SHADER_PATH + "colored/shader.vert",
+                                     set::SHADER_PATH + "colored/shader.frag"
+                                     );
 
   std::vector< float > vbo;
-  std::vector< graphics::VAOElement > vaoVec;
+  std::vector< shg::VAOElement > vaoVec;
   GLsizei vaoTotalStride;
 
   _buildVBO( &vbo, &vaoVec, &vaoTotalStride );
 
-  upGLIds_->vbo = graphics::OpenGLHelper::createBuffer(
-                                                       vbo.data( ),
-                                                       vbo.size( )
-                                                       );
+  upGLIds_->vbo = shg::OpenGLHelper::createBuffer(
+                                                  vbo.data( ),
+                                                  vbo.size( )
+                                                  );
 
-  upGLIds_->vao = graphics::OpenGLHelper::createVao(
-                                                    upGLIds_->program,
-                                                    upGLIds_->vbo,
-                                                    vaoTotalStride,
-                                                    vaoVec
-                                                    );
+  upGLIds_->vao = shg::OpenGLHelper::createVao(
+                                               upGLIds_->program,
+                                               upGLIds_->vbo,
+                                               vaoTotalStride,
+                                               vaoVec
+                                               );
 }
 
 
@@ -111,7 +111,7 @@ AxisRenderer::~AxisRenderer( )
 /// \author Logan Barnes
 ///////////////////////////////////////////////////////////////
 void
-AxisRenderer::render( const graphics::GlmCamera< float > &camera )
+AxisRenderer::render( const shg::GlmCamera< float > &camera )
 {
   if ( showGrid_ || showAxes_ )
   {
@@ -119,25 +119,25 @@ AxisRenderer::render( const graphics::GlmCamera< float > &camera )
 
     glm::mat4 projViewModel = camera.getPerspectiveProjectionViewMatrix( );
 
-    graphics::OpenGLHelper::setMatrixUniform(
-                                             upGLIds_->program,
-                                             "projectionViewModel",
-                                             glm::value_ptr( projViewModel )
-                                             );
+    shg::OpenGLHelper::setMatrixUniform(
+                                        upGLIds_->program,
+                                        "projectionViewModel",
+                                        glm::value_ptr( projViewModel )
+                                        );
 
     if ( showGrid_ )
     {
-      graphics::OpenGLHelper::renderBuffer(
-                                           upGLIds_->vao,
-                                           0,
-                                           numGridVerts_ - ( showAxes_ ? 4 : 0 ),
-                                           GL_LINES
-                                           );
+      shg::OpenGLHelper::renderBuffer(
+                                      upGLIds_->vao,
+                                      0,
+                                      numGridVerts_ - ( showAxes_ ? 4 : 0 ),
+                                      GL_LINES
+                                      );
     }
 
     if ( showAxes_ )
     {
-      graphics::OpenGLHelper::renderBuffer( upGLIds_->vao, numGridVerts_, 6, GL_LINES );
+      shg::OpenGLHelper::renderBuffer( upGLIds_->vao, numGridVerts_, 6, GL_LINES );
     }
   }
 } // AxisRenderer::onRender
@@ -172,9 +172,9 @@ AxisRenderer::renderGui( )
 ///////////////////////////////////////////////////////////////
 void
 AxisRenderer::_buildVBO(
-                        std::vector< float >                *pVbo,           ///<
-                        std::vector< graphics::VAOElement > *pVaoVec,        ///<
-                        GLsizei                             *pVaoTotalStride ///>
+                        std::vector< float >           *pVbo,                ///<
+                        std::vector< shg::VAOElement > *pVaoVec,        ///<
+                        GLsizei                        *pVaoTotalStride      ///>
                         )
 {
   std::vector< float > &vbo = *pVbo;

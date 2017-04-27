@@ -1,11 +1,11 @@
 // GpuScene.hpp
 #pragma once
 
-// system
-#include <memory>
-
 // shared
 #include "shared/graphics/GraphicsForwardDeclarations.hpp"
+
+// system
+#include <memory>
 
 
 namespace set
@@ -33,7 +33,7 @@ public:
   /// \brief render
   /// \param alpha
   /////////////////////////////////////////////
-  std::vector<  > getGeometry() const;
+  std::vector<  > getGeometry ( ) const;
 
 
   /////////////////////////////////////////////
@@ -44,7 +44,7 @@ public:
 
 private:
 
-  graphics::OpenGLWrapper &graphics_;
+  shg::OpenGLWrapper &graphics_;
 
   std::vector< std::unique_ptr< Geometry > > relations_;
 
