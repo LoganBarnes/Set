@@ -1,6 +1,8 @@
 #include "SetCallback.hpp"
-#include "GLFW/glfw3.h"
 #include "SetIOHandler.hpp"
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 
 namespace set
@@ -8,7 +10,7 @@ namespace set
 
 
 SetCallback::SetCallback( SetIOHandler &handler )
-  : shared::SharedCallback( )
+  : shs::SharedCallback( )
   , handler_       ( handler )
   , leftMouseDown_ ( false )
   , rightMouseDown_( false )
@@ -36,9 +38,7 @@ SetCallback::handleWindowSize(
                               int height
                               )
 {
-
   handler_.resize( width, height );
-
 }
 
 
@@ -51,40 +51,29 @@ SetCallback::handleMouseButton(
                                int
                                )
 {
-
   if ( button == GLFW_MOUSE_BUTTON_1 )
   {
-
     if ( action == GLFW_PRESS )
     {
-
       leftMouseDown_ = true;
       glfwGetCursorPos( pWindow, &prevX_, &prevY_ );
-
     }
     else
     {
-
       leftMouseDown_ = false;
-
     }
   }
   else
   if ( button == GLFW_MOUSE_BUTTON_2 )
   {
-
     if ( action == GLFW_PRESS )
     {
-
       rightMouseDown_ = true;
       glfwGetCursorPos( pWindow, &prevX_, &prevY_ );
-
     }
     else
     {
-
       rightMouseDown_ = false;
-
     }
 
   }
@@ -110,9 +99,7 @@ SetCallback::handleKey(
 
     if ( action == GLFW_RELEASE )
     {
-
-      glfwSetWindowShouldClose( pWindow, GL_TRUE );
-
+      glfwSetWindowShouldClose( pWindow, GLFW_TRUE );
     }
 
     break;
@@ -123,15 +110,11 @@ SetCallback::handleKey(
 
     if ( action == GLFW_PRESS )
     {
-
       shiftDown_ = true;
-
     }
     else
     {
-
       shiftDown_ = false;
-
     }
 
     break;
@@ -142,15 +125,11 @@ SetCallback::handleKey(
 
     if ( action == GLFW_PRESS )
     {
-
       ctrlDown_ = true;
-
     }
     else
     {
-
       ctrlDown_ = false;
-
     }
 
     break;
@@ -172,7 +151,6 @@ SetCallback::handleKey(
     }
 
   default:
-
     break;
 
   } // switch
@@ -189,24 +167,18 @@ SetCallback::handleCursorPosition(
                                   double ypos
                                   )
 {
-
   if ( leftMouseDown_ )
   {
-
     handler_.rotateCamera( prevX_ - xpos, prevY_ - ypos );
-
   }
   else
   if ( rightMouseDown_ )
   {
-
     handler_.zoomCamera( prevY_ - ypos );
-
   }
 
   prevX_ = xpos;
   prevY_ = ypos;
-
 } // handleCursorPosition
 
 
@@ -219,9 +191,7 @@ SetCallback::handleScroll(
                           double yoffset
                           )
 {
-
   handler_.zoomCamera( yoffset );
-
 }
 
 

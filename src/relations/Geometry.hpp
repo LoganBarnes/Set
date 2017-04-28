@@ -1,16 +1,15 @@
 // Geometry.hpp
 #pragma once
 
-
-#include <vector>
-#include "glm/glm.hpp"
-
 #ifdef __CUDACC__
 #include <cuda_runtime.h>
 #define CUDA_CALLABLE_MEMBER __host__ __device__
 #else
 #define CUDA_CALLABLE_MEMBER
 #endif
+
+#include <glm/glm.hpp>
+#include <vector>
 
 
 namespace set

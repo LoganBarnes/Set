@@ -9,7 +9,7 @@ namespace set
 class SetIOHandler;
 
 
-class SetCallback : public shared::SharedCallback
+class SetCallback : public shs::SharedCallback
 {
 public:
 
@@ -75,4 +75,3 @@ private:
 
 
 } //  namespace set
-

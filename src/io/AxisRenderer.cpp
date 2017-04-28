@@ -1,20 +1,21 @@
 #include "AxisRenderer.hpp"
 
+// project
+#include "SetConfig.hpp"
+
+// shared
+#include "shared/graphics/OpenGLHelper.hpp"
+#include "shared/graphics/OpenGLWrapper.hpp"
+#include "shared/graphics/GlmCamera.hpp"
+#include <imgui.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
+
 // system
 #include <cassert>
 #include <iostream>
-
-// shared
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include "imgui.h"
-#include "shared/graphics/OpenGLWrapper.hpp"
-#include "shared/graphics/Camera.hpp"
-
-// project
-#include "SetConfig.hpp"
 
 
 
@@ -29,9 +30,9 @@ void
 setVertex(
           std::vector< float > &verts,
           size_t               &index,
-          const float           x,
-          const float           y,
-          const float           z,
+          const float          x,
+          const float          y,
+          const float          z,
           const glm::vec3      &color
           )
 {
@@ -49,115 +50,133 @@ setVertex(
 }
 
 
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 /// \brief Set::Set
 ///
 /// \author Logan Barnes
-/////////////////////////////////////////////
-AxisRenderer::AxisRenderer( graphics::OpenGLWrapper &graphics )
-  : graphics_( graphics )
-  , showAxes_( true )
+///////////////////////////////////////////////////////////////
+AxisRenderer::AxisRenderer( )
+  : showAxes_( true )
   , showGrid_( true )
   , cellRadius_( 10 )
   , singleCellSize_( 2.0f )
   , gridColor_( 0.4f )
   , numGridVerts_( 0 )
+  , upGLIds_( new shg::StandardPipeline )
 {
-
-  graphics_.addProgram(
-                       "envProgram",
-                       set::SHADER_PATH + "colored/shader.vert",
-                       set::SHADER_PATH + "colored/shader.frag"
-                       );
+  upGLIds_->program =
+    shg::OpenGLHelper::createProgram(
+                                     set::SHADER_PATH + "colored/shader.vert",
+                                     set::SHADER_PATH + "colored/shader.frag"
+                                     );
 
   std::vector< float > vbo;
-  graphics::VAOSettings settings { "envProgram" };
+  std::vector< shg::VAOElement > vaoVec;
+  GLsizei vaoTotalStride;
 
-  _buildVBO( &vbo, &settings );
+  _buildVBO( &vbo, &vaoVec, &vaoTotalStride );
 
-  graphics.addBuffer(
-                     "envBuffer",
-                     vbo.data( ),
-                     vbo.size( ),
-                     GL_STATIC_DRAW,
-                     settings
-                     );
+  upGLIds_->vbo = shg::OpenGLHelper::createBuffer(
+                                                  vbo.data( ),
+                                                  vbo.size( )
+                                                  );
 
+  upGLIds_->vao = shg::OpenGLHelper::createVao(
+                                               upGLIds_->program,
+                                               upGLIds_->vbo,
+                                               vaoTotalStride,
+                                               vaoVec
+                                               );
 }
 
 
 
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/// \brief AxisRenderer::~AxisRenderer
+///
+///        Must define deleter in cpp for use with
+///        unique_ptr forward declared classes
+///
+/// \author Logan Barnes
+///////////////////////////////////////////////////////////////
+AxisRenderer::~AxisRenderer( )
+{}
+
+
+
+///////////////////////////////////////////////////////////////
 /// \brief Set::render
 /// \param alpha
 ///
 /// \author Logan Barnes
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 void
-AxisRenderer::render( const graphics::Camera< float > &camera )
+AxisRenderer::render( const shg::GlmCamera< float > &camera )
 {
-
   if ( showGrid_ || showAxes_ )
   {
-    graphics_.useProgram( "envProgram" );
+    glUseProgram( *upGLIds_->program );
 
-    glm::mat4 projViewModel = camera.getProjectionMatrix( ) * camera.getViewMatrix( );
+    glm::mat4 projViewModel = camera.getPerspectiveProjectionViewMatrix( );
 
-    graphics_.setMatrixUniform(
-                               "envProgram",
-                               "projectionViewModel",
-                               glm::value_ptr( projViewModel )
-                               );
+    shg::OpenGLHelper::setMatrixUniform(
+                                        upGLIds_->program,
+                                        "projectionViewModel",
+                                        glm::value_ptr( projViewModel )
+                                        );
 
     if ( showGrid_ )
     {
-
-      graphics_.renderBuffer( "envBuffer", 0, numGridVerts_ - ( showAxes_ ? 4 : 0 ), GL_LINES );
-
+      shg::OpenGLHelper::renderBuffer(
+                                      upGLIds_->vao,
+                                      0,
+                                      numGridVerts_ - ( showAxes_ ? 4 : 0 ),
+                                      GL_LINES
+                                      );
     }
 
     if ( showAxes_ )
     {
-
-      graphics_.renderBuffer( "envBuffer", numGridVerts_, 6, GL_LINES );
-
+      shg::OpenGLHelper::renderBuffer( upGLIds_->vao, numGridVerts_, 6, GL_LINES );
     }
   }
-
 } // AxisRenderer::onRender
 
 
 
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 /// \brief AxisRenderer::renderGui
 ///
 /// \author Logan Barnes
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 void
 AxisRenderer::renderGui( )
 {
-
   //
   // Control listing
   //
   if ( ImGui::CollapsingHeader( "Grid", "grid", false, true ) )
   {
-    ImGui::Checkbox( "Show Grid", &showGrid_ );
-
-    ImGui::Checkbox( "Show Axes", &showAxes_ );
+    ImGui::Checkbox( "Show Grid  ", &showGrid_ );
+    ImGui::SameLine( );
+    ImGui::Checkbox( "Show Axes  ", &showAxes_ );
   }
-
 } // AxisRenderer::onGuiRender
 
 
 
+///////////////////////////////////////////////////////////////
+/// \brief AxisRenderer::_buildVBO
+///
+/// \author Logan Barnes
+///////////////////////////////////////////////////////////////
 void
 AxisRenderer::_buildVBO(
-                       std::vector< float > *pVbo,
-                       graphics::VAOSettings          *pSettings
-                       )
+                        std::vector< float >           *pVbo,                ///<
+                        std::vector< shg::VAOElement > *pVaoVec,        ///<
+                        GLsizei                        *pVaoTotalStride      ///>
+                        )
 {
-
   std::vector< float > &vbo = *pVbo;
 
   // grid
@@ -196,13 +215,12 @@ AxisRenderer::_buildVBO(
     }
 
     // X-axis
-    setVertex( vbo, index, -maxDist, 0.0, 0.0,      gridColor_ );
-    setVertex( vbo, index, maxDist,  0.0, 0.0,      gridColor_ );
+      setVertex( vbo, index, -maxDist, 0.0, 0.0,      gridColor_ );
+      setVertex( vbo, index, maxDist,  0.0, 0.0,      gridColor_ );
 
     // Z-axis
-    setVertex( vbo, index, 0.0,      0.0, -maxDist, gridColor_ );
-    setVertex( vbo, index, 0.0,      0.0, maxDist,  gridColor_ );
-
+      setVertex( vbo, index, 0.0,      0.0, -maxDist, gridColor_ );
+      setVertex( vbo, index, 0.0,      0.0, maxDist,  gridColor_ );
   }
 
   numGridVerts_ = index / 6;
@@ -211,35 +229,32 @@ AxisRenderer::_buildVBO(
   {
     // X-axis
     glm::vec3 color ( 1.0f, 0.0f, 0.0f );
-    setVertex( vbo, index, -maxDist, 0.0, 0.0, color );
-    setVertex( vbo, index, maxDist,  0.0, 0.0, color );
+      setVertex( vbo, index, -maxDist, 0.0, 0.0, color );
+      setVertex( vbo, index, maxDist,  0.0, 0.0, color );
 
     // Y-axis
     color = glm::vec3( 0.0f, 1.0f, 0.0f );
-    setVertex( vbo, index, 0.0, -maxDist, 0.0, color );
-    setVertex( vbo, index, 0.0, maxDist,  0.0, color );
+      setVertex( vbo, index, 0.0,       -maxDist, 0.0, color );
+      setVertex( vbo, index, 0.0, maxDist,        0.0, color );
 
     // Z-axis
     color = glm::vec3( 0.0f, 0.0f, 1.0f );
-    setVertex( vbo, index, 0.0, 0.0, -maxDist, color );
-    setVertex( vbo, index, 0.0, 0.0, maxDist,  color );
+      setVertex( vbo, index, 0.0, 0.0, -maxDist, color );
+      setVertex( vbo, index, 0.0, 0.0, maxDist,  color );
   }
-
 
   assert( index == size );
 
-
-  graphics::VAOSettings &settings = *pSettings;
+  pVaoVec->clear( );
 
   float *pointer = 0;
   GLint elmtSize = 3;
 
-  settings.totalStride = static_cast< GLsizei >( sizeof( GLfloat ) ) * 6;
+  *pVaoTotalStride = static_cast< GLsizei >( sizeof( GLfloat ) ) * 6;
 
-  settings.settings.push_back( { "inPosition", elmtSize, GL_FLOAT, pointer } );
+  pVaoVec->push_back( { "inPosition", elmtSize, GL_FLOAT, pointer } );
   pointer += elmtSize;
-  settings.settings.push_back( { "inColor", elmtSize, GL_FLOAT, pointer } );
-
+  pVaoVec->push_back( { "inColor", elmtSize, GL_FLOAT, pointer } );
 } // AxisRenderer::_buildVBO
 
 

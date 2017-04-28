@@ -23,7 +23,7 @@ public:
   /// \brief SceneInterface
   /////////////////////////////////////////////
   explicit
-  SceneInterface( graphics::OpenGLWrapper &graphics );
+  SceneInterface( shg::OpenGLWrapper &graphics );
 
 
   virtual
@@ -34,7 +34,7 @@ public:
   /// \brief render
   /// \param alpha
   /////////////////////////////////////////////
-  void render ( const graphics::Camera< float > &camera ) = 0;
+  void render ( const shg::Camera< float > &camera ) = 0;
 
 
   /////////////////////////////////////////////

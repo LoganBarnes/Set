@@ -21,12 +21,12 @@ main(
      const char **argv  ///< array of argument strings
      )
 {
-  shared::Driver::printProjectInfo(
-                                   set::PROJECT_NAME,
-                                   set::VERSION_MAJOR,
-                                   set::VERSION_MINOR,
-                                   set::VERSION_PATCH
-                                   );
+  shs::Driver::printProjectInfo(
+                                set::PROJECT_NAME,
+                                set::VERSION_MAJOR,
+                                set::VERSION_MINOR,
+                                set::VERSION_PATCH
+                                );
 
   try
   {
@@ -42,7 +42,7 @@ main(
     // pass world and ioHandler to driver
     // to manage event loop
     //
-    shared::EventDriver driver( world, io );
+    shs::EventDriver driver( world, io );
 
     //
     // run program

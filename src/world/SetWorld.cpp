@@ -10,7 +10,7 @@ namespace set
 /// \brief SetWorld::SetWorld
 ///////////////////////////////////////////////////////////////
 SetWorld::SetWorld( )
-  : shared::World()
+  : shs::World( )
 {}
 
 
@@ -18,12 +18,11 @@ SetWorld::SetWorld( )
 /// \brief SetWorld::update
 ///////////////////////////////////////////////////////////////
 void
-SetWorld::update (
-                  const double /*worldTime*/, ///< update to this time
-                  const double /*timestep*/   ///< interval since last update
-                  )
+SetWorld::update(
+                 const double /*worldTime*/,  ///< update to this time
+                 const double /*timestep*/    ///< interval since last update
+                 )
 {}
 
 
 } // end namespace set
-
